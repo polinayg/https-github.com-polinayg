@@ -5,16 +5,23 @@
 The Instagram API works with **Business or Creator** accounts.
 
 1. In the Instagram app: Settings → Account type → switch to Creator or Business (free).
-2. Go to <https://developers.facebook.com/apps>, create an app (type: Business), and add the
-   **Instagram** product ("API setup with Instagram login").
-3. Under *Generate access tokens*, add your Instagram account and generate a token with the
-   `instagram_business_basic` permission.
-4. Make it available to the scripts:
+2. Go to <https://developers.facebook.com/apps> → **Create app** → use case
+   **"Manage messaging & content on Instagram"** → skip the business step → **Create app**.
+3. Dashboard → **Use cases → Customize** → **API setup with Unified login**.
+   (New apps no longer get "API setup with Instagram login".)
+4. Connect a **business portfolio** when asked (free; create one with your name/brand).
+5. Under **Configure your app** → **Create new configuration**, choose your Instagram account
+   as the asset, and generate the **system-user access token**. It never expires.
+6. Make it available to the scripts:
    ```bash
    export IG_ACCESS_TOKEN="…"
    ```
-   Tokens last ~60 days. Refresh with:
-   `curl "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=$IG_ACCESS_TOKEN"`
+   `fetch_reels.py` finds the Instagram account automatically. If it can't, find the
+   account's id in the business portfolio settings and also `export IG_USER_ID="…"`.
+
+Older apps that still have **API setup with Instagram login** work too: generate the token
+there instead (it lasts ~60 days; refresh with
+`curl "https://graph.instagram.com/refresh_access_token?grant_type=ig_refresh_token&access_token=$IG_ACCESS_TOKEN"`).
 
 Files fetched this way are the original uploads without the Instagram watermark — YouTube
 down-ranks watermarked reposts, so avoid screen-recorded or third-party-downloaded copies.
